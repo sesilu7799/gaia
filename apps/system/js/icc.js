@@ -329,6 +329,12 @@ var icc = {
   },
 
   resize: function() {
+    if (!StatusBar.height) {
+      this.icc_view.classList.add('fullscreen');
+    } else {
+      this.icc_view.classList.remove('fullscreen');
+    }
+
     var height = window.layoutManager.height - StatusBar.height;
     this.icc_view.style.height = height + 'px';
   },
