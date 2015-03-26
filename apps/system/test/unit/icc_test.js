@@ -497,6 +497,38 @@ suite('STK (icc) >', function() {
     assert.isTrue(resizeStub.calledOnce);
   });
 
+  suite('Resize', function() {
+    var addStub, removeStub;
+
+    setup(function() {
+      icc.resize.restore();
+      window.layoutManager = {
+        height: 100
+      };
+      var iccViewClass = icc.icc_view.classList;
+      addStub = this.sinon.stub(iccViewClass, 'add');
+      removeStub = this.sinon.stub(iccViewClass, 'remove');
+    });
+
+    teardown(function() {
+      window.layoutManager = null;
+    });
+
+    test('adds fullscreen class when no statusbar', function() {
+      StatusBar.height = 0;
+      window.icc.resize();
+      assert.isTrue(addStub.called);
+      assert.isFalse(removeStub.called);
+    });
+
+    test('removes fullscreen class when statusbar', function() {
+      StatusBar.height = 30;
+      window.icc.resize();
+      assert.isTrue(removeStub.called);
+      assert.isFalse(addStub.called);
+    });
+  });
+
   suite('Replace STK messages >', function() {
     var stubResponseSTKCommand;
     var unableToProcess;
